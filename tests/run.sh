@@ -42,7 +42,7 @@ function test_java {
 function test_python {
     python_version=$1
     pyenv local $python_version > /dev/null 2>&1 \
-        && cd python_tests/python$python_version/ \
+        && cd "python_tests/python$python_version" \
         && python . > /dev/null 2>&1
     check_status $? "python$python_version"
     cd $rootdir
@@ -87,8 +87,8 @@ test_java 11
 test_java 17
 test_java 21
 
-test_python "3.8"
-test_python "3.9"
-test_python "3.10"
-test_python "3.11"
-test_python "3.12"
+test_python "3.8" "3_8"
+test_python "3.9" "3_9"
+test_python "3.10" "3_10"
+test_python "3.11" "3_11"
+test_python "3.12" "3_12"
