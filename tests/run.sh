@@ -7,6 +7,8 @@ red='\033[0;31m'
 green='\033[0;32m'
 clear='\033[0m'
 
+declare -A java_versions=([21]=21.0.2-amzn [17]=17.0.10-amzn [11]=11.0.22-amzn [8]=8.0.402-amzn)
+
 function check_status {
     status=$1
     test_name=$2
@@ -24,6 +26,16 @@ function test_node {
         && npm i > /dev/null 2>&1 \
         && npm run start > /dev/null 2>&1
     check_status $? "node$node_version"
+    cd $rootdir
+}
+
+function test_java {
+    java_version=$1
+    sdk_version=${java_versions[$java_version]}
+    sdk use java $sdk_version > /dev/null 2>&1 \
+        && cd java_tests/mvn-jdk$java_version \
+        && mvn install > /dev/null 2>&1
+    check_status $? "java$java_version"
     cd $rootdir
 }
 
@@ -55,3 +67,13 @@ test_node 14
 test_node 16
 test_node 18
 test_node 20
+
+# sourcing sdkman
+. ~/.sdkman/bin/sdkman-init.sh
+check_status $? "sdkman"
+
+# tests java
+test_java 8
+test_java 11
+test_java 17
+test_java 21

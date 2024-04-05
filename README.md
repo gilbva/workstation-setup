@@ -68,10 +68,11 @@ See https://sdkman.io/ for more details on how to setup sdkman
     sdk install liquibase 4.27.0
 
     source ~/.bashrc
-    sdk use groovy 4.0.20
-    sdk use gradle 8.7
-    sdk use maven 3.9.6
-    sdk use liquibase 4.27.0
+    sdk default java 21.0.2-amzn
+    sdk default groovy 4.0.20
+    sdk default gradle 8.7
+    sdk default maven 3.9.6
+    sdk default liquibase 4.27.0
 
     groovy -version
     java -version
