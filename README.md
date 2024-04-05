@@ -36,8 +36,17 @@ See https://github.com/nvm-sh/nvm for the latest version and instructions
     export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
     nvm -v
-    nvm install node
-    nvm use node
+    nvm install 20
+    nvm install 18
+    nvm install 16
+    nvm install 14
+    nvm install 12
+    nvm install 10
+    nvm install 8
+    nvm install 6
+    nvm install 4
+    nvm use 20
+    nvm alias default 20
     node -v
     npm -v
 
@@ -74,13 +83,18 @@ See https://sdkman.io/ for more details on how to setup sdkman
 
 See https://github.com/pyenv/pyenv for more details on how to setup pyenv
 
+    sudo apt update; sudo apt install build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
     curl https://pyenv.run | bash
     echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
     echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
     echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+    echo 'export PATH=$PATH:~/.local/bin' >> ~/.bashrc
     source ~/.bashrc
-    pyenv install 3.10.4
+    pyenv install 3.12.2
+    pyenv global 3.12.2
+    python -m ensurepip --upgrade
     python3 --version
+    pip -V
 
 ## C# and .net
 
@@ -93,9 +107,17 @@ See https://learn.microsoft.com/en-us/dotnet/core/install/linux-ubuntu-install?p
 
 ## Go
 
-See https://github.com/moovweb/gvm for more details
+See https://github.com/go-nv/goenv/blob/master/INSTALL.md for more details
 
-    sudo apt-get update && sudo apt-get -y install golang-go
+    git clone https://github.com/go-nv/goenv.git ~/.goenv
+    echo 'export GOENV_ROOT="$HOME/.goenv"' >> ~/.bashrc
+    echo 'export PATH="$GOENV_ROOT/bin:$PATH"' >> ~/.bashrc
+    source ~/.bashrc
+    goenv install 1.12.0
+    goenv global 1.12.0
+    echo 'eval "$(goenv init -)"' >> ~/.bashrc
+    echo 'export PATH="$GOROOT/bin:$PATH"' >> ~/.bashrc
+    echo 'export PATH="$PATH:$GOPATH/bin"' >> ~/.bashrc
 
 ## C/C++
 
@@ -179,9 +201,55 @@ See https://github.com/vagrant-libvirt/vagrant-libvirt for more details
     echo "export VAGRANT_DEFAULT_PROVIDER=libvirt" >> ~/.bashrc
     source ~/.bashrc
 
-
 # Infraestructure
 
+## Kubectl
+
+See https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/ for more details
+
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    chmod +x kubectl
+    sudo mv kubectl /usr/local/bin
+    kubectl version
+
+## Terraform
+
+See https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
+
+    sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
+    wget -O- https://apt.releases.hashicorp.com/gpg | \
+      gpg --dearmor | \
+      sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
+    gpg --no-default-keyring \
+      --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg \
+      --fingerprint
+    echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
+      https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
+      sudo tee /etc/apt/sources.list.d/hashicorp.list
+    sudo apt update
+    sudo apt-get install terraform
+    terraform -v
+
+## Ansible
+
+See https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible-with-pip for more details
+
+    pip install --user ansible
+    echo 'export PATH=$PATH:~/.local/bin' >> ~/.bashrc
+    source ~/.bashrc
 
 # Tests
 
+## Postman
+
+    sudo snap install postman
+
+## K6
+
+See https://k6.io/docs/get-started/installation/ for more details
+
+    sudo gpg -k
+    sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+    echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+    sudo apt-get update
+    sudo apt-get install k6
