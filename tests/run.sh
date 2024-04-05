@@ -39,6 +39,15 @@ function test_java {
     cd $rootdir
 }
 
+function test_python {
+    python_version=$1
+    pyenv local $python_version > /dev/null 2>&1 \
+        && cd python_tests/python$python_version/ \
+        && python . > /dev/null 2>&1
+    check_status $? "python$python_version"
+    cd $rootdir
+}
+
 # test git
 git clone https://github.com/go-nv/goenv ./github-test > /dev/null 2>&1
 check_status $? "git"
@@ -77,3 +86,9 @@ test_java 8
 test_java 11
 test_java 17
 test_java 21
+
+test_python "3.8"
+test_python "3.9"
+test_python "3.10"
+test_python "3.11"
+test_python "3.12"

@@ -91,8 +91,12 @@ See https://github.com/pyenv/pyenv for more details on how to setup pyenv
     echo 'eval "$(pyenv init -)"' >> ~/.bashrc
     echo 'export PATH=$PATH:~/.local/bin' >> ~/.bashrc
     source ~/.bashrc
-    pyenv install 3.12.2
-    pyenv global 3.12.2
+    pyenv install 3.12
+    pyenv install 3.11
+    pyenv install 3.10
+    pyenv install 3.9
+    pyenv install 3.8
+    pyenv global 3.12
     python -m ensurepip --upgrade
     python3 --version
     pip -V
