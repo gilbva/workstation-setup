@@ -86,5 +86,102 @@ See https://github.com/pyenv/pyenv for more details on how to setup pyenv
 
 See https://learn.microsoft.com/en-us/dotnet/core/install/linux-ubuntu-install?pivots=os-linux-ubuntu-2204&tabs=dotnet8 for more details
 
+    sudo apt-get update && sudo apt-get install -y dotnet-sdk-6.0
+    sudo apt-get update && sudo apt-get install -y dotnet-sdk-7.0
     sudo apt-get update && sudo apt-get install -y dotnet-sdk-8.0
     dotnet --version
+
+## Go
+
+See https://github.com/moovweb/gvm for more details
+
+    sudo apt-get update && sudo apt-get -y install golang-go
+
+## C/C++
+
+    sudo apt install -y build-essential
+
+# Editors and IDEs
+
+## Free Editors VSCOde, Atom
+
+    sudo snap install code --classic
+    sudo snap install atom --classic
+
+## Jetbrains Professional IDEs
+
+For professional editions use this
+
+    sudo snap install intellij-idea-ultimate --classic
+    sudo snap install rider --classic
+    sudo snap install goland --classic
+    sudo snap install pycharm-professional --classic
+    sudo snap install webstorm --classic
+    sudo snap install datagrip --classic
+    sudo snap install clion --classic
+
+## Jetbrains Community IDEs
+
+    sudo snap install pycharm-community --classic
+    sudo snap install intellij-idea-community --classic
+
+# Virtualization
+
+## Libvirt, KVM & qemu
+
+See https://ubuntu.com/server/docs/libvirt for more details
+
+    sudo apt update
+    sudo apt install cpu-checker
+    kvm-ok
+    sudo apt install qemu-kvm libvirt-daemon-system
+    sudo adduser $USER libvirt
+    sudo apt-get install virt-manager 
+
+## Docker
+
+See https://docs.docker.com/engine/install/ubuntu/ for more details
+
+    sudo apt-get update
+    sudo apt-get install ca-certificates curl
+    sudo install -m 0755 -d /etc/apt/keyrings
+    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+    sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+    echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+      $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    sudo apt-get update
+
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    sudo groupadd docker
+    sudo usermod -aG docker $USER
+
+    sudo systemctl enable docker.service
+    sudo systemctl enable containerd.service
+
+    docker run hello-world
+
+## Vagrant
+
+See https://developer.hashicorp.com/vagrant/install?ajs_aid=c8d9e40b-3d23-41d6-aad0-3a01d90741cd&product_intent=vagrant for more details
+
+    wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+    echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+    sudo apt update && sudo apt install vagrant
+    vagrant -v
+
+See https://github.com/vagrant-libvirt/vagrant-libvirt for more details
+
+    sudo apt install libvirt-dev
+    vagrant plugin install vagrant-libvirt
+    echo "export VAGRANT_DEFAULT_PROVIDER=libvirt" >> ~/.bashrc
+    source ~/.bashrc
+
+
+# Infraestructure
+
+
+# Tests
+
