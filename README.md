@@ -8,7 +8,8 @@ This setup is intended to be use in kubuntu, usually in a bare-metal machine, bu
 
 First we need some cli standard tools 
 
-    sudo apt install curl wget
+    sudo apt install curl wget git-all
+    git --version
 
 ## Chrome
 
@@ -57,6 +58,7 @@ See https://sdkman.io/ for more details on how to setup sdkman
     sdk install maven 3.9.6
     sdk install liquibase 4.27.0
 
+    source ~/.bashrc
     sdk use groovy 4.0.20
     sdk use gradle 8.7
     sdk use maven 3.9.6
@@ -73,4 +75,16 @@ See https://sdkman.io/ for more details on how to setup sdkman
 See https://github.com/pyenv/pyenv for more details on how to setup pyenv
 
     curl https://pyenv.run | bash
-    
+    echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+    echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+    echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+    source ~/.bashrc
+    pyenv install 3.10.4
+    python3 --version
+
+## C# and .net
+
+See https://learn.microsoft.com/en-us/dotnet/core/install/linux-ubuntu-install?pivots=os-linux-ubuntu-2204&tabs=dotnet8 for more details
+
+    sudo apt-get update && sudo apt-get install -y dotnet-sdk-8.0
+    dotnet --version
