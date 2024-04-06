@@ -118,8 +118,12 @@ See https://github.com/go-nv/goenv/blob/master/INSTALL.md for more details
     echo 'export GOENV_ROOT="$HOME/.goenv"' >> ~/.bashrc
     echo 'export PATH="$GOENV_ROOT/bin:$PATH"' >> ~/.bashrc
     source ~/.bashrc
-    goenv install 1.12.0
-    goenv global 1.12.0
+    goenv install 1.18
+    goenv install 1.19
+    goenv install 1.20
+    goenv install 1.21
+    goenv install 1.22
+    goenv global 1.22
     echo 'eval "$(goenv init -)"' >> ~/.bashrc
     echo 'export PATH="$GOROOT/bin:$PATH"' >> ~/.bashrc
     echo 'export PATH="$PATH:$GOPATH/bin"' >> ~/.bashrc
