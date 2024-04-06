@@ -194,8 +194,20 @@ See https://ubuntu.com/server/docs/libvirt for more details
 
 See [cloud images](http://cloud-images.ubuntu.com/) for more info
 
-    sudo wget http://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img -O /var/lib/libvirt/images/jammy-server-cloudimg-amd64.img
+### Noble 24.04
+
+    # QCow2 UEFI/GPT Bootable disk image
     sudo wget http://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img -O /var/lib/libvirt/images/noble-server-cloudimg-amd64.img
+
+### Jammy 22.04
+
+    # QCow2 UEFI/GPT Bootable disk image
+    sudo wget http://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img -O /var/lib/libvirt/images/jammy-server-cloudimg-amd64.img
+
+### Focal 20.04
+
+    # QCow2 UEFI/GPT Bootable disk image with linux-kvm KVM optimised kernel
+    http://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64-disk-kvm.img -O /var/lib/libvirt/images/focal-server-cloudimg-amd64-disk-kvm.img
 
 ## Docker
 
@@ -222,6 +234,13 @@ See https://docs.docker.com/engine/install/ubuntu/ for more details
 
     docker run hello-world
 
+## LXC 
+
+See https://linuxcontainers.org/lxc/getting-started/ for more details
+
+    sudo apt-get install lxc
+    lxc-checkconfig
+
 ## Vagrant
 
 See https://developer.hashicorp.com/vagrant/install?ajs_aid=c8d9e40b-3d23-41d6-aad0-3a01d90741cd&product_intent=vagrant for more details
@@ -240,7 +259,7 @@ See https://github.com/vagrant-libvirt/vagrant-libvirt for more details
 
 # Infraestructure
 
-## Kubectl
+## Kubernetes
 
 See https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/ for more details
 
@@ -248,6 +267,31 @@ See https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/ for more detai
     chmod +x kubectl
     sudo mv kubectl /usr/local/bin
     kubectl version
+
+### k3d 
+
+See https://k3d.io/v5.6.0/#installation for more details
+
+    curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+    k3d --version
+
+### kind
+
+See https://kind.sigs.k8s.io/docs/user/quick-start for more details
+
+    # For AMD64 / x86_64
+    [ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.22.0/kind-linux-amd64
+    chmod +x ./kind
+    sudo mv ./kind /usr/local/bin/kind
+    kind --version
+
+### k3sup
+
+See https://nerc-project.github.io/nerc-docs/other-tools/kubernetes/k3s/k3s-using-k3sup/ for more details
+
+    curl -sLS https://get.k3sup.dev | sh
+    sudo mv k3sup /usr/bin/
+    k3sup version
 
 ## Terraform
 

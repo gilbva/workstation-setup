@@ -65,6 +65,51 @@ function test_go {
     cd $rootdir
 }
 
+function test_command {
+    if ! [ -x "$(command -v $1)" ]; then
+        printf "${red}$1 is not installed${clear}\n" 
+    else 
+        printf "${green}$1 is installed${clear}\n" 
+    fi
+}
+
+function test_vagrant {
+    cd "vagrant_tests" \
+        && vagrant up > /dev/null 2>&1 \
+        && vagrant destroy -f > /dev/null 2>&1
+    check_status $? "vagrant"
+    cd $rootdir
+}
+
+function test_docker {
+    docker run  -it hello-world > /dev/null 2>&1
+    check_status $? "docker"
+}
+
+function test_lxc {
+    ct_name=lxc-test-ct
+    lxc launch ubuntu:22.04 $ct_name > /dev/null 2>&1 \
+        && lxc stop $ct_name > /dev/null 2>&1 \
+        && lxc delete $ct_name > /dev/null 2>&1
+    check_status $? "lxc"
+}
+
+function test_k3d {
+    cluster=k3dtestcluster1
+    k3d cluster create $cluster > /dev/null 2>&1 \
+        && kubectl get nodes > /dev/null 2>&1 \
+        && k3d cluster delete $cluster > /dev/null 2>&1
+    check_status $? "k3d"
+}
+
+function test_kind {
+    cluster=kindtestcluster1
+    kind create cluster --name $cluster > /dev/null 2>&1 \
+        && kubectl get nodes > /dev/null 2>&1 \
+        && kind delete cluster --name $cluster > /dev/null 2>&1
+    check_status $? "kind"
+}
+
 # test git
 git clone https://github.com/go-nv/goenv ./github-test > /dev/null 2>&1
 check_status $? "git"
@@ -116,8 +161,29 @@ test_dotnet 6
 test_dotnet 7
 test_dotnet 8
 
+# test golang
 test_go 1.18
 test_go 1.19
 test_go 1.20
 test_go 1.21
 test_go 1.22
+
+# IDEs and Editors
+test_command code
+test_command intellij-idea-ultimate
+test_command clion
+test_command datagrip
+test_command goland
+test_command pycharm-professional
+test_command webstorm
+test_command rider
+test_command postman
+
+# virtualization tools
+test_vagrant
+test_docker
+test_lxc
+
+# kubernetes tools
+test_k3d
+test_kind
