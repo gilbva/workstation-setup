@@ -133,16 +133,24 @@ See https://github.com/go-nv/goenv/blob/master/INSTALL.md for more details
     sudo apt install -y build-essential
     sudo apt install software-properties-common
     sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-    sudo apt install gcc-7 g++-7 gcc-8 g++-8 gcc-9 g++-9 gcc-10 g++-10 gcc-11 g++-11 gcc-12 g++-12 gcc-13 g++-13
+    sudo apt install gcc-9 g++-9 gcc-9-base gcc-9-doc libstdc++-9-dev libstdc++-9-doc -y
+    sudo apt install gcc-10 g++-10 gcc-10-base gcc-10-doc libstdc++-10-dev libstdc++-10-doc -y
+    sudo apt install gcc-11 g++-11 gcc-11-base gcc-11-doc libstdc++-11-dev libstdc++-11-doc -y
+    sudo apt install gcc-12 g++-12 gcc-12-base gcc-12-doc libstdc++-12-dev libstdc++-12-doc -y
+    sudo apt install gcc-13 g++-13 gcc-13-base gcc-13-doc libstdc++-13-dev libstdc++-13-doc -y
+    sudo apt install make cmake -y
 
     sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 130 --slave /usr/bin/g++ g++ /usr/bin/g++-13 --slave /usr/bin/gcov gcov /usr/bin/gcov-13
-    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 120 --slave /usr/bin/g++ g++ /usr/bin/g++-12 --slave /usr/bin/gcov gcov /usr/bin/gcov-12
-    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 110 --slave /usr/bin/g++ g++ /usr/bin/g++-11 --slave /usr/bin/gcov gcov /usr/bin/gcov-11
-    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100 --slave /usr/bin/g++ g++ /usr/bin/g++-10 --slave /usr/bin/gcov gcov /usr/bin/gcov-10
-    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90 --slave /usr/bin/g++ g++ /usr/bin/g++-9 --slave /usr/bin/gcov gcov /usr/bin/gcov-9
-    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 80 --slave /usr/bin/g++ g++ /usr/bin/g++-8 --slave /usr/bin/gcov gcov /usr/bin/gcov-8
-    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 70 --slave /usr/bin/g++ g++ /usr/bin/g++-7 --slave /usr/bin/gcov gcov /usr/bin/gcov-7
 
+## OpenGL Libraries
+
+See https://medium.com/geekculture/a-beginners-guide-to-setup-opengl-in-linux-debian-2bfe02ccd1e for more details
+
+    sudo apt-get update
+    sudo apt-get install cmake pkg-config -y
+    sudo apt-get install mesa-utils libglu1-mesa-dev freeglut3-dev mesa-common-dev -y
+    sudo apt-get install libglew-dev libglfw3-dev libglm-dev -y
+    sudo apt-get install libao-dev libmpg123-dev -y
 
 # Editors and IDEs
 
@@ -177,9 +185,17 @@ See https://ubuntu.com/server/docs/libvirt for more details
     sudo apt update
     sudo apt install cpu-checker
     kvm-ok
+    cat /proc/cpuinfo
+    lsmod | grep kvm
     sudo apt install qemu-kvm libvirt-daemon-system
     sudo adduser $USER libvirt
     sudo apt-get install virt-manager 
+    sudo systemctl enable --now libvirtd
+
+See [cloud images](http://cloud-images.ubuntu.com/) for more info
+
+    sudo wget http://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img -O /var/lib/libvirt/images/jammy-server-cloudimg-amd64.img
+    sudo wget http://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img -O /var/lib/libvirt/images/noble-server-cloudimg-amd64.img
 
 ## Docker
 
