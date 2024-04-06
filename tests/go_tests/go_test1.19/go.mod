@@ -1,3 +1,3 @@
-module go_test1.19
+module go_test_app
 
 go 1.19

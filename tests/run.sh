@@ -41,9 +41,8 @@ function test_java {
 
 function test_python {
     python_version=$1
-    pyenv local $python_version > /dev/null 2>&1 \
-        && cd "python_tests/python$python_version" \
-        && python . > /dev/null 2>&1
+    cd "python_tests/python$python_version" \
+        && $(readlink $(pyenv which python)) . > /dev/null 2>&1
     check_status $? "python$python_version"
     cd $rootdir
 }
@@ -54,6 +53,15 @@ function test_dotnet {
         && dotnet build > /dev/null 2>&1 \
         && dotnet run > /dev/null 2>&1
     check_status $? "dotnet$dotnet_version"
+    cd $rootdir
+}
+
+function test_go {
+    go_version=$1
+    cd "go_tests/go_test$go_version" \
+        && go build > /dev/null 2>&1 \
+        && ./go_test_app > /dev/null 2>&1
+    check_status $? "go$go_version"
     cd $rootdir
 }
 
@@ -107,3 +115,9 @@ test_python "3.12"
 test_dotnet 6
 test_dotnet 7
 test_dotnet 8
+
+test_go 1.18
+test_go 1.19
+test_go 1.20
+test_go 1.21
+test_go 1.22
