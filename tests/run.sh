@@ -48,6 +48,16 @@ function test_python {
     cd $rootdir
 }
 
+function test_dotnet {
+    dotnet_version=$1
+    cd "dotnet_tests/DotNetTest$dotnet_version" \
+        && dotnet build > /dev/null 2>&1 \
+        && dotnet run > /dev/null 2>&1
+    check_status $? "dotnet$dotnet_version"
+    cd $rootdir
+}
+
+
 # test git
 git clone https://github.com/go-nv/goenv ./github-test > /dev/null 2>&1
 check_status $? "git"
@@ -87,8 +97,12 @@ test_java 11
 test_java 17
 test_java 21
 
-test_python "3.8" "3_8"
-test_python "3.9" "3_9"
-test_python "3.10" "3_10"
-test_python "3.11" "3_11"
-test_python "3.12" "3_12"
+test_python "3.8"
+test_python "3.9"
+test_python "3.10"
+test_python "3.11"
+test_python "3.12"
+
+test_dotnet 6
+test_dotnet 7
+test_dotnet 8

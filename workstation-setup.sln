@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{CCBDEDB3-4F61-4E68-AC3B-9132545BC650}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dotnet_tests", "dotnet_tests", "{3E0C935A-C7D7-431C-ACAD-3A1C16392827}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetTest8", "tests\dotnet_tests\DotNetTest8\DotNetTest8.csproj", "{8A4BCBD4-4C53-427C-AEA2-BDDD7A757B23}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8A4BCBD4-4C53-427C-AEA2-BDDD7A757B23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A4BCBD4-4C53-427C-AEA2-BDDD7A757B23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A4BCBD4-4C53-427C-AEA2-BDDD7A757B23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A4BCBD4-4C53-427C-AEA2-BDDD7A757B23}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3E0C935A-C7D7-431C-ACAD-3A1C16392827} = {CCBDEDB3-4F61-4E68-AC3B-9132545BC650}
+		{8A4BCBD4-4C53-427C-AEA2-BDDD7A757B23} = {3E0C935A-C7D7-431C-ACAD-3A1C16392827}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2FC18803-BA12-4790-98BC-FCA273F3DA54}
+	EndGlobalSection
+EndGlobal
