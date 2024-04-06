@@ -57,7 +57,6 @@ function test_dotnet {
     cd $rootdir
 }
 
-
 # test git
 git clone https://github.com/go-nv/goenv ./github-test > /dev/null 2>&1
 check_status $? "git"
@@ -97,12 +96,14 @@ test_java 11
 test_java 17
 test_java 21
 
+# tests python
 test_python "3.8"
 test_python "3.9"
 test_python "3.10"
 test_python "3.11"
 test_python "3.12"
 
+# tests dotnet
 test_dotnet 6
 test_dotnet 7
 test_dotnet 8
