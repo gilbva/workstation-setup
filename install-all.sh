@@ -1,22 +1,35 @@
 
 function install_basic_tools {
+    sudo apt update
     sudo apt install curl wget git-all net-tools iproute2 \
         netcat dnsutils iputils-ping iptables nmap tcpdump \
-        traceroute openssl -y
+        traceroute openssl neovim -y
+
+    grep -q "alias vi=neovim" ~/.bashrc
+    if [[ $? != 0 ]];
+    then
+        echo 'alias vi=neovim' >> ~/.bashrc
+    fi
 }
 
 function install_chrome {
-    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    sudo dpkg -i google-chrome-stable_current_amd64.deb
-    sudo apt --fix-broken install
-    rm google-chrome-stable_current_amd64.deb
+    if ! command -v google-chrome-stable &> /dev/null
+    then
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo dpkg -i google-chrome-stable_current_amd64.deb
+        sudo apt --fix-broken install
+        rm google-chrome-stable_current_amd64.deb
+    fi
 }
 
 function install_nodejs {
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-    export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    nvm -v
+    grep -q "export NVM_DIR" ~/.bashrc
+    if [[ $? != 0 ]];
+    then
+        export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    fi
     nvm install 20
     nvm install 18
     nvm install 16
@@ -33,7 +46,13 @@ function install_nodejs {
 function install_java {
     curl -s "https://get.sdkman.io" | bash
     source "$HOME/.sdkman/bin/sdkman-init.sh"
-    sdk version
+
+    grep -q "sdkman_auto_answer=fase" ~/.sdkman/etc/config
+    if [[ $? != 0 ]];
+    then
+        sudo sed -i 's|sdkman_auto_answer=fase|sdkman_auto_answer=true|g' ~/.sdkman/etc/config
+    fi
+
     sdk install java 21.0.2-amzn
     sdk install java 17.0.10-amzn
     sdk install java 11.0.22-amzn
@@ -53,45 +72,81 @@ function install_java {
 }
 
 function install_python {
-    sudo apt update; sudo apt install build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev -y
+    sudo apt install build-essential libssl-dev zlib1g-dev libbz2-dev \
+        libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils tk-dev \
+        libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev -y
+
     curl https://pyenv.run | bash
-    echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
-    echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
-    echo 'eval "$(pyenv init -)"' >> ~/.bashrc
-    echo 'export PATH=$PATH:~/.local/bin' >> ~/.bashrc
-    source ~/.bashrc
-    pyenv install 3.12
-    pyenv install 3.11
-    pyenv install 3.10
-    pyenv install 3.9
-    pyenv install 3.8
+
+    grep -q "export PYENV_ROOT=" ~/.bashrc
+    if [[ $? != 0 ]];
+    then
+        echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+        echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+        echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+        echo 'export PATH=$PATH:~/.local/bin' >> ~/.bashrc
+        source ~/.bashrc
+    fi
+
+    function do_install_python {
+        ls ~/.pyenv/versions/ | grep -q $1
+        if [[ $? != 0 ]];
+        then
+            pyenv install $1
+        fi
+    }
+
+    do_install_python 3.12
+    do_install_python 3.11
+    do_install_python 3.10
+    do_install_python 3.9
+    do_install_python 3.8
+
     pyenv global 3.12
     source ~/.bashrc
     python -m ensurepip --upgrade
 }
 
 function install_dotnet {
-    sudo apt-get update \
-     && sudo apt-get install -y dotnet-sdk-6.0 \
+    sudo apt-get install -y dotnet-sdk-6.0 \
      && sudo apt-get install -y dotnet-sdk-7.0 \
      && sudo apt-get install -y dotnet-sdk-8.0
     dotnet --version
 }
 
 function install_go {
-    git clone https://github.com/go-nv/goenv.git ~/.goenv
-    echo 'export GOENV_ROOT="$HOME/.goenv"' >> ~/.bashrc
-    echo 'export PATH="$GOENV_ROOT/bin:$PATH"' >> ~/.bashrc
-    source ~/.bashrc
-    goenv install 1.18
-    goenv install 1.19
-    goenv install 1.20
-    goenv install 1.21
-    goenv install 1.22
+    grep -q "export GOENV_ROOT=" ~/.bashrc
+    if [[ $? != 0 ]];
+    then
+        git clone https://github.com/go-nv/goenv.git ~/.goenv
+        echo 'export GOENV_ROOT="$HOME/.goenv"' >> ~/.bashrc
+        echo 'export PATH="$GOENV_ROOT/bin:$PATH"' >> ~/.bashrc
+        source ~/.bashrc
+    fi
+
+    function do_install_go {
+        ls ~/.goenv/versions/ | grep -q $1
+        if [[ $? != 0 ]];
+        then
+            goenv install $1
+        fi
+    }
+
+    do_install_go 1.18
+    do_install_go 1.19
+    do_install_go 1.20
+    do_install_go 1.21
+    do_install_go 1.22
+
     goenv global 1.22
-    echo 'eval "$(goenv init -)"' >> ~/.bashrc
-    echo 'export PATH="$GOROOT/bin:$PATH"' >> ~/.bashrc
-    echo 'export PATH="$PATH:$GOPATH/bin"' >> ~/.bashrc
+
+    grep -q 'eval "$(goenv init -)"' ~/.bashrc
+    if [[ $? != 0 ]];
+    then
+        echo 'eval "$(goenv init -)"' >> ~/.bashrc
+        echo 'export PATH="$GOROOT/bin:$PATH"' >> ~/.bashrc
+        echo 'export PATH="$PATH:$GOPATH/bin"' >> ~/.bashrc
+    fi
 }
 
 function install_cpp {
@@ -109,7 +164,6 @@ function install_cpp {
 }
 
 function install_opengl {
-    sudo apt-get update
     sudo apt-get install mesa-utils libglu1-mesa-dev freeglut3-dev mesa-common-dev -y
     sudo apt-get install libglew-dev libglfw3-dev libglm-dev -y
     sudo apt-get install libao-dev libmpg123-dev -y
@@ -136,41 +190,62 @@ function install_jetbrain_comm {
 }
 
 function install_virtualization {
-    sudo apt update
-    sudo apt install cpu-checker
+    sudo apt install cpu-checker -y
     sudo apt install qemu-kvm libvirt-daemon-system libguestfs-tools virt-manager virt-top -y
     sudo adduser $USER libvirt
-    sudo sed -i 's|#security_driver = "selinux"|security_driver = "none"|g' /etc/libvirt/qemu.conf
+
+    grep -q '#security_driver = "selinux"' ~/.bashrc
+    if [[ $? != 0 ]];
+    then
+        sudo sed -i 's|#security_driver = "selinux"|security_driver = "none"|g' /etc/libvirt/qemu.conf
+    fi
+    
     sudo systemctl enable --now libvirtd
     sudo systemctl start libvirtd
 }
 
 function download_imgs {
-    sudo wget http://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img -O /var/lib/libvirt/images/noble-server-cloudimg-amd64.img
-    sudo wget http://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img -O /var/lib/libvirt/images/jammy-server-cloudimg-amd64.img
-    sudo wget http://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64-disk-kvm.img -O /var/lib/libvirt/images/focal-server-cloudimg-amd64-disk-kvm.img
+
+    function do_download_img {
+        if ! test -f "/var/lib/libvirt/images/$2"; then
+            sudo wget "$1/$2" -O "/var/lib/libvirt/images/$2"
+        else
+           echo "file $2 exists" 
+        fi
+    }
+
+    do_download_img "http://cloud-images.ubuntu.com/noble/current" "noble-server-cloudimg-amd64.img"
+    do_download_img "http://cloud-images.ubuntu.com/noble/current" "jammy-server-cloudimg-amd64.img"
+    do_download_img "http://cloud-images.ubuntu.com/noble/current" "focal-server-cloudimg-amd64-disk-kvm.img"
 }
 
 function install_docker {
-    sudo apt-get update
-    sudo apt-get install ca-certificates curl -y
-    sudo install -m 0755 -d /etc/apt/keyrings
-    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-    sudo chmod a+r /etc/apt/keyrings/docker.asc
 
-    echo \
-      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-      $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-    sudo apt-get update
+    if ! test -f "/etc/apt/keyrings/docker.asc"; then
+        sudo apt-get install ca-certificates curl -y
+        sudo install -m 0755 -d /etc/apt/keyrings
+        sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+        sudo chmod a+r /etc/apt/keyrings/docker.asc
 
-    sudo apt-get install docker-ce docker-ce-cli containerd.io \
-        docker-buildx-plugin docker-compose-plugin -y
-    sudo groupadd docker
-    sudo usermod -aG docker $USER
+        echo \
+        "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+        $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+        sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+        sudo apt-get update
+    else
+        echo "docker repo already configured" 
+    fi
 
-    sudo systemctl enable docker.service
-    sudo systemctl enable containerd.service
+    if ! command -v docker &> /dev/null
+    then
+        sudo apt-get install docker-ce docker-ce-cli containerd.io \
+            docker-buildx-plugin docker-compose-plugin -y
+        sudo groupadd docker
+        sudo usermod -aG docker $USER
+
+        sudo systemctl enable docker.service
+        sudo systemctl enable containerd.service
+    fi
 }
 
 function install_lxc {
@@ -179,54 +254,77 @@ function install_lxc {
 }
 
 function install_vagrant {
-    wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-    echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-    sudo apt update && sudo apt install vagrant -y
+    if ! command -v vagrant &> /dev/null
+    then
+        wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+        echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+        sudo apt update && sudo apt install vagrant -y
 
-    # vagrant libvirt
-    sudo apt install libvirt-dev -y
-    vagrant plugin install vagrant-libvirt
-    echo "export VAGRANT_DEFAULT_PROVIDER=libvirt" >> ~/.bashrc
-    source ~/.bashrc
+        # vagrant libvirt
+        sudo apt install libvirt-dev -y
+        vagrant plugin install vagrant-libvirt
+        echo "export VAGRANT_DEFAULT_PROVIDER=libvirt" >> ~/.bashrc
+        source ~/.bashrc
+    fi
 }
 
 function install_kubernetes {
-    # kubectl
-    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-    chmod +x kubectl
-    sudo mv kubectl /usr/local/bin
+    if ! command -v kubectl &> /dev/null
+    then
+        # kubectl
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        chmod +x kubectl
+        sudo mv kubectl /usr/local/bin
+    fi
 
-    # bash
-    curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+    # k3d
+    if ! command -v k3d &> /dev/null
+    then
+        curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+    fi
 
     # kind
-    [ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.22.0/kind-linux-amd64
-    chmod +x ./kind
-    sudo mv ./kind /usr/local/bin/kind
+    if ! command -v kind &> /dev/null
+    then
+        [ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.22.0/kind-linux-amd64
+        chmod +x ./kind
+        sudo mv ./kind /usr/local/bin/kind
+    fi
 
     # k3sup
-    curl -sLS https://get.k3sup.dev | sh
-    sudo mv k3sup /usr/bin/
+    if ! command -v k3sup &> /dev/null
+    then
+        curl -sLS https://get.k3sup.dev | sh
+        sudo mv k3sup /usr/bin/
+    fi
 }
 
 function install_terraform {
-    sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
-    wget -O- https://apt.releases.hashicorp.com/gpg | \
-      gpg --dearmor | \
-      sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
-    gpg --no-default-keyring \
-      --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg \
-      --fingerprint
-    echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
-      https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
-      sudo tee /etc/apt/sources.list.d/hashicorp.list
-    sudo apt update && sudo apt-get install terraform -y
+    if ! command -v terraform &> /dev/null
+    then
+        sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
+        wget -O- https://apt.releases.hashicorp.com/gpg | \
+            gpg --dearmor | \
+            sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
+        gpg --no-default-keyring \
+            --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg \
+            --fingerprint
+
+        echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
+            https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
+            sudo tee /etc/apt/sources.list.d/hashicorp.list
+
+        sudo apt-get install terraform -y
+    fi
 }
 
 function install_ansible {
-    pip install --user ansible
-    echo 'export PATH=$PATH:~/.local/bin' >> ~/.bashrc
-    source ~/.bashrc
+    if ! command -v ansible &> /dev/null
+    then
+        pip install --user ansible
+        echo 'export PATH=$PATH:~/.local/bin' >> ~/.bashrc
+        source ~/.bashrc
+    fi
 }
 
 function install_test_tools {
@@ -234,10 +332,13 @@ function install_test_tools {
     sudo snap install postman
 
     # k6
-    sudo gpg -k
-    sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
-    echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
-    sudo apt-get update && sudo apt-get install k6 -y
+    if ! command -v k6 &> /dev/null
+    then
+        sudo gpg -k
+        sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+        echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+        sudo apt-get update && sudo apt-get install k6 -y
+    fi
 }
 
 
