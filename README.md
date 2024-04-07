@@ -240,8 +240,7 @@ See https://docs.docker.com/engine/install/ubuntu/ for more details
 
 See https://linuxcontainers.org/lxc/getting-started/ for more details
 
-    sudo apt-get install lxc -y
-    lxc-checkconfig
+    sudo snap install lxd
 
 ## Vagrant
 
