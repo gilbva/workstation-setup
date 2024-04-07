@@ -152,7 +152,11 @@ function install_go {
 function install_cpp {
     sudo apt install -y build-essential
     sudo apt install software-properties-common
-    sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+
+    if ! grep -q "ppa:ubuntu-toolchain-r/test" /etc/apt/sources.list; then
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+    fi
+
     sudo apt install gcc-9 g++-9 gcc-9-base gcc-9-doc libstdc++-9-dev libstdc++-9-doc -y
     sudo apt install gcc-10 g++-10 gcc-10-base gcc-10-doc libstdc++-10-dev libstdc++-10-doc -y
     sudo apt install gcc-11 g++-11 gcc-11-base gcc-11-doc libstdc++-11-dev libstdc++-11-doc -y
