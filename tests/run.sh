@@ -112,8 +112,6 @@ function test_kind {
 
 function test_terraform {
     cd terraform_tests
-    #cp /var/lib/libvirt/images/noble-server-cloudimg-amd64.img disk1.img
-    sudo chown $USER:$USER disk1.img
 }
 
 # test git
