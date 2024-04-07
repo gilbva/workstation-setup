@@ -68,6 +68,7 @@ function install_python {
         libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils tk-dev \
         libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev -y
 
+    rm ~/.pyenv
     curl https://pyenv.run | bash
 
     grep -q "export PYENV_ROOT=" ~/.bashrc

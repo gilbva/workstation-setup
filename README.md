@@ -10,6 +10,9 @@ To install all software with one script run the following
     git clone https://github.com/gilbva/workstation-setup
     cd workstation-setup
     ./install-all.sh
+
+to test run the following script
+
     cd tests
     ./run.sh   
 
