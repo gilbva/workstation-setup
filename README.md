@@ -84,7 +84,7 @@ See https://sdkman.io/ for more details on how to setup sdkman
 
 See https://github.com/pyenv/pyenv for more details on how to setup pyenv
 
-    sudo apt update; sudo apt install build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+    sudo apt update; sudo apt install build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev -y
     curl https://pyenv.run | bash
     echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
     echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
@@ -97,6 +97,7 @@ See https://github.com/pyenv/pyenv for more details on how to setup pyenv
     pyenv install 3.9
     pyenv install 3.8
     pyenv global 3.12
+    source ~/.bashrc
     python -m ensurepip --upgrade
     python3 --version
     pip -V
@@ -105,9 +106,10 @@ See https://github.com/pyenv/pyenv for more details on how to setup pyenv
 
 See https://learn.microsoft.com/en-us/dotnet/core/install/linux-ubuntu-install?pivots=os-linux-ubuntu-2204&tabs=dotnet8 for more details
 
-    sudo apt-get update && sudo apt-get install -y dotnet-sdk-6.0
-    sudo apt-get update && sudo apt-get install -y dotnet-sdk-7.0
-    sudo apt-get update && sudo apt-get install -y dotnet-sdk-8.0
+    sudo apt-get update \
+     && sudo apt-get install -y dotnet-sdk-6.0 \
+     && sudo apt-get install -y dotnet-sdk-7.0 \
+     && sudo apt-get install -y dotnet-sdk-8.0
     dotnet --version
 
 ## Go
@@ -207,14 +209,14 @@ See [cloud images](http://cloud-images.ubuntu.com/) for more info
 ### Focal 20.04
 
     # QCow2 UEFI/GPT Bootable disk image with linux-kvm KVM optimised kernel
-    http://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64-disk-kvm.img -O /var/lib/libvirt/images/focal-server-cloudimg-amd64-disk-kvm.img
+    sudo wget http://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64-disk-kvm.img -O /var/lib/libvirt/images/focal-server-cloudimg-amd64-disk-kvm.img
 
 ## Docker
 
 See https://docs.docker.com/engine/install/ubuntu/ for more details
 
     sudo apt-get update
-    sudo apt-get install ca-certificates curl
+    sudo apt-get install ca-certificates curl -y
     sudo install -m 0755 -d /etc/apt/keyrings
     sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
     sudo chmod a+r /etc/apt/keyrings/docker.asc
@@ -225,20 +227,20 @@ See https://docs.docker.com/engine/install/ubuntu/ for more details
       sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
     sudo apt-get update
 
-    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
     sudo groupadd docker
     sudo usermod -aG docker $USER
 
     sudo systemctl enable docker.service
     sudo systemctl enable containerd.service
 
-    docker run hello-world
+    sudo docker run hello-world
 
 ## LXC 
 
 See https://linuxcontainers.org/lxc/getting-started/ for more details
 
-    sudo apt-get install lxc
+    sudo apt-get install lxc -y
     lxc-checkconfig
 
 ## Vagrant
@@ -247,12 +249,12 @@ See https://developer.hashicorp.com/vagrant/install?ajs_aid=c8d9e40b-3d23-41d6-a
 
     wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
     echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-    sudo apt update && sudo apt install vagrant
+    sudo apt update && sudo apt install vagrant -y
     vagrant -v
 
 See https://github.com/vagrant-libvirt/vagrant-libvirt for more details
 
-    sudo apt install libvirt-dev
+    sudo apt install libvirt-dev -y
     vagrant plugin install vagrant-libvirt
     echo "export VAGRANT_DEFAULT_PROVIDER=libvirt" >> ~/.bashrc
     source ~/.bashrc
@@ -307,8 +309,7 @@ See https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-
     echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
       https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
       sudo tee /etc/apt/sources.list.d/hashicorp.list
-    sudo apt update
-    sudo apt-get install terraform
+    sudo apt update && sudo apt-get install terraform -y
     terraform -version
 
 ## Ansible
@@ -332,5 +333,4 @@ See https://k6.io/docs/get-started/installation/ for more details
     sudo gpg -k
     sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
     echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
-    sudo apt-get update
-    sudo apt-get install k6
+    sudo apt-get update && sudo apt-get install k6 -y
