@@ -1,6 +1,3 @@
-data "template_file" "user_data" {
-  template = file("${path.module}/cloud_init.cfg")
-}
 
 resource "libvirt_volume" "test1_disk" {
   name = "test1.qcow2"

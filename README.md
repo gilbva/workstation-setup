@@ -189,6 +189,7 @@ See https://ubuntu.com/server/docs/libvirt for more details
     lsmod | grep kvm
     sudo apt install qemu-kvm libvirt-daemon-system libguestfs-tools virt-manager virt-top -y
     sudo adduser $USER libvirt
+    sudo sed -i 's|#security_driver = "selinux"|security_driver = "none"|g' /etc/libvirt/qemu.conf
     sudo systemctl enable --now libvirtd
 
 See [cloud images](http://cloud-images.ubuntu.com/) for more info

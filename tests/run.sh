@@ -111,7 +111,11 @@ function test_kind {
 }
 
 function test_terraform {
-    cd terraform_tests
+    cd terraform_tests && \
+        terraform init -input=false > /dev/null 2>&1 \
+        && terraform apply -input=false -auto-approve > /dev/null 2>&1 \
+        && terraform destroy -input=false -auto-approve > /dev/null 2>&1
+    check_status $? "terraform"
 }
 
 # test git
