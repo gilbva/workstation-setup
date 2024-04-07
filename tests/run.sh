@@ -110,6 +110,12 @@ function test_kind {
     check_status $? "kind"
 }
 
+function test_terraform {
+    cd terraform_tests
+    #cp /var/lib/libvirt/images/noble-server-cloudimg-amd64.img disk1.img
+    sudo chown $USER:$USER disk1.img
+}
+
 # test git
 git clone https://github.com/go-nv/goenv ./github-test > /dev/null 2>&1
 check_status $? "git"
@@ -187,3 +193,6 @@ test_lxc
 # kubernetes tools
 test_k3d
 test_kind
+
+# test terraform
+test_terraform

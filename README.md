@@ -8,7 +8,7 @@ This setup is intended to be use in kubuntu, usually in a bare-metal machine, bu
 
 First we need some cli standard tools 
 
-    sudo apt install curl wget git-all
+    sudo apt install curl wget git-all net-tools iproute2 netcat dnsutils iputils-ping iptables nmap tcpdump traceroute openssl -y
     git --version
 
 ## Chrome
@@ -187,9 +187,8 @@ See https://ubuntu.com/server/docs/libvirt for more details
     kvm-ok
     cat /proc/cpuinfo
     lsmod | grep kvm
-    sudo apt install qemu-kvm libvirt-daemon-system
+    sudo apt install qemu-kvm libvirt-daemon-system libguestfs-tools virt-manager virt-top -y
     sudo adduser $USER libvirt
-    sudo apt-get install virt-manager 
     sudo systemctl enable --now libvirtd
 
 See [cloud images](http://cloud-images.ubuntu.com/) for more info
@@ -309,7 +308,7 @@ See https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-
       sudo tee /etc/apt/sources.list.d/hashicorp.list
     sudo apt update
     sudo apt-get install terraform
-    terraform -v
+    terraform -version
 
 ## Ansible
 
