@@ -2,6 +2,13 @@
 
 This setup is intended to be use in kubuntu, usually in a bare-metal machine, but can be used with a vm as well, please check out README-VM.md for instructions virtual machines running on qemu.
 
+# Download and Run script
+
+    sudo apt install curl
+    curl https://raw.githubusercontent.com/gilbva/workstation-setup/main/install-all.sh -O install-all.sh
+    chmod +x ./install-all.sh
+    ./install-all.sh
+
 # Basic Tools
 
 ## Bash tools

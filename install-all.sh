@@ -24,12 +24,8 @@ function install_chrome {
 
 function install_nodejs {
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-    grep -q "export NVM_DIR" ~/.bashrc
-    if [[ $? != 0 ]];
-    then
-        export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    fi
+    export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
     nvm install 20
     nvm install 18
     nvm install 16
@@ -47,11 +43,7 @@ function install_java {
     curl -s "https://get.sdkman.io" | bash
     source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-    grep -q "sdkman_auto_answer=fase" ~/.sdkman/etc/config
-    if [[ $? != 0 ]];
-    then
-        sudo sed -i 's|sdkman_auto_answer=fase|sdkman_auto_answer=true|g' ~/.sdkman/etc/config
-    fi
+    sudo sed -i 's|sdkman_auto_answer=false|sdkman_auto_answer=true|g' ~/.sdkman/etc/config
 
     sdk install java 21.0.2-amzn
     sdk install java 17.0.10-amzn
@@ -85,8 +77,8 @@ function install_python {
         echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
         echo 'eval "$(pyenv init -)"' >> ~/.bashrc
         echo 'export PATH=$PATH:~/.local/bin' >> ~/.bashrc
-        source ~/.bashrc
     fi
+    source ~/.bashrc
 
     function do_install_python {
         ls ~/.pyenv/versions/ | grep -q $1
@@ -326,6 +318,11 @@ function install_ansible {
     if ! command -v ansible &> /dev/null
     then
         pip install --user ansible
+    fi
+
+    grep -q 'export PATH=$PATH:~/.local/bin' ~/.bashrc
+    if [[ $? != 0 ]];
+    then
         echo 'export PATH=$PATH:~/.local/bin' >> ~/.bashrc
         source ~/.bashrc
     fi
