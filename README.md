@@ -4,10 +4,14 @@ This setup is intended to be use in kubuntu, usually in a bare-metal machine, bu
 
 # Download and Run script
 
-    sudo apt install curl
-    curl https://raw.githubusercontent.com/gilbva/workstation-setup/main/install-all.sh -O install-all.sh
-    chmod +x ./install-all.sh
+To install all software with one script run the following
+
+    sudo apt install curl wget git-all -y
+    git clone https://github.com/gilbva/workstation-setup
+    cd workstation-setup
     ./install-all.sh
+    cd tests
+    ./run.sh   
 
 # Basic Tools
 
