@@ -68,8 +68,13 @@ function install_python {
         libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils tk-dev \
         libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev -y
 
-    rm ~/.pyenv
+    # rm -rf ~/.pyenv
     curl https://pyenv.run | bash
+
+    export PYENV_ROOT="$HOME/.pyenv"
+    [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init -)"
+    export PATH=$PATH:~/.local/bin
 
     grep -q "export PYENV_ROOT=" ~/.bashrc
     if [[ $? != 0 ]];
@@ -116,6 +121,8 @@ function install_go {
         echo 'export PATH="$GOENV_ROOT/bin:$PATH"' >> ~/.bashrc
         source ~/.bashrc
     fi
+    export GOENV_ROOT="$HOME/.goenv"
+    export PATH="$GOENV_ROOT/bin:$PATH"
 
     function do_install_go {
         ls ~/.goenv/versions/ | grep -q $1
@@ -140,6 +147,10 @@ function install_go {
         echo 'export PATH="$GOROOT/bin:$PATH"' >> ~/.bashrc
         echo 'export PATH="$PATH:$GOPATH/bin"' >> ~/.bashrc
     fi
+
+    eval "$(goenv init -)"
+    export PATH="$GOROOT/bin:$PATH"
+    export PATH="$PATH:$GOPATH/bin
 }
 
 function install_cpp {
