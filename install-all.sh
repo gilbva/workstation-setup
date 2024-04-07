@@ -150,7 +150,7 @@ function install_go {
 
     eval "$(goenv init -)"
     export PATH="$GOROOT/bin:$PATH"
-    export PATH="$PATH:$GOPATH/bin
+    export PATH="$PATH:$GOPATH/bin"
 }
 
 function install_cpp {
