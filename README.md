@@ -254,6 +254,8 @@ See https://docs.docker.com/engine/install/ubuntu/ for more details
 See https://linuxcontainers.org/lxc/getting-started/ for more details
 
     snap install lxd --channel=latest/stable
+    lxc storage create local dir
+    lxc profile device add default root disk path=/ pool=local
     sudo adduser $USER lxd
 
 ## Vagrant

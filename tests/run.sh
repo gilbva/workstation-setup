@@ -7,6 +7,8 @@ red='\033[0;31m'
 green='\033[0;32m'
 clear='\033[0m'
 
+source ~/.bashrc
+
 declare -A java_versions=([21]=21.0.2-amzn [17]=17.0.10-amzn [11]=11.0.22-amzn [8]=8.0.402-amzn)
 
 function check_status {
