@@ -223,8 +223,8 @@ function download_imgs {
     }
 
     do_download_img "http://cloud-images.ubuntu.com/noble/current" "noble-server-cloudimg-amd64.img"
-    do_download_img "http://cloud-images.ubuntu.com/noble/current" "jammy-server-cloudimg-amd64.img"
-    do_download_img "http://cloud-images.ubuntu.com/noble/current" "focal-server-cloudimg-amd64-disk-kvm.img"
+    do_download_img "http://cloud-images.ubuntu.com/jammy/current" "jammy-server-cloudimg-amd64.img"
+    do_download_img "http://cloud-images.ubuntu.com/focal/current" "focal-server-cloudimg-amd64-disk-kvm.img"
 }
 
 function install_docker {
