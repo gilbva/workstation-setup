@@ -258,9 +258,9 @@ function install_docker {
 
 function install_lxc {
     snap install lxd --channel=latest/stable
+    sudo adduser $USER lxd
     lxc storage create local dir
     lxc profile device add default root disk path=/ pool=local
-    sudo adduser $USER lxd
 }
 
 function install_vagrant {
