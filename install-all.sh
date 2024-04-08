@@ -157,8 +157,10 @@ function install_cpp {
     sudo apt install -y build-essential
     sudo apt install software-properties-common
 
-    if ! grep -q "ppa:ubuntu-toolchain-r/test" /etc/apt/sources.list; then
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+    grep ^ /etc/apt/sources.list /etc/apt/sources.list.d/* | grep -q "ubuntu-toolchain-r/test"
+    if [[ $? != 0 ]];
+    then
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
     fi
 
     sudo apt install gcc-9 g++-9 gcc-9-base gcc-9-doc libstdc++-9-dev libstdc++-9-doc -y
