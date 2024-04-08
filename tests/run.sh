@@ -8,6 +8,16 @@ green='\033[0;32m'
 clear='\033[0m'
 
 source ~/.bashrc
+export GOENV_ROOT="$HOME/.goenv"
+export PATH="$GOENV_ROOT/bin:$PATH"
+eval "$(goenv init -)"
+export PATH="$GOROOT/bin:$PATH"
+export PATH="$PATH:$GOPATH/bin"
+
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+export PATH=$PATH:~/.local/bin
 
 declare -A java_versions=([21]=21.0.2-amzn [17]=17.0.10-amzn [11]=11.0.22-amzn [8]=8.0.402-amzn)
 
