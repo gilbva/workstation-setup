@@ -2,11 +2,13 @@
 
 rootdir=$(readlink -f "$0")
 rootdir=$(dirname "$rootdir")
+rootdir="$rootdir/tests"
 
 red='\033[0;31m'
 green='\033[0;32m'
 clear='\033[0m'
 
+cd $rootdir
 source ~/.bashrc
 export GOENV_ROOT="$HOME/.goenv"
 export PATH="$GOENV_ROOT/bin:$PATH"
