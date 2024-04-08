@@ -13,8 +13,7 @@ To install all software with one script run the following
 
 to test run the following script
 
-    cd tests
-    ./run.sh   
+    ./test-all.sh   
 
 # Basic Tools
 
