@@ -192,6 +192,7 @@ function install_jetbrain_pro {
     sudo snap install webstorm --classic
     sudo snap install datagrip --classic
     sudo snap install clion --classic
+    sudo snap install rubymine --classic
 }
 
 function install_jetbrain_comm {
